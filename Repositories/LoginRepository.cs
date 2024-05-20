@@ -41,7 +41,7 @@ namespace ExcelReportUpload.Repositories
                     var parameters = new DynamicParameters();
                     parameters.Add("@UserName", user.UserName, DbType.String);
                     parameters.Add("@Password", user.Password, DbType.String);
-                    parameters.Add("@OutPut", dbType: DbType.Int16, direction: ParameterDirection.Output);
+                    parameters.Add("@OutPut", dbType: DbType.Int32, direction: ParameterDirection.Output);
                     parameters.Add("@OutPutMessage", dbType: DbType.String, size: 250, direction: ParameterDirection.Output);
 
                     await connection.ExecuteAsync("LOGIN_CHECK", parameters, commandType: CommandType.StoredProcedure);

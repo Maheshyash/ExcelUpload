@@ -19,6 +19,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuer = true,//Validate the server and generate the token
         ValidateLifetime = true,
         ValidateAudience = true,// It will validate the audience during token validation
+        ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
         ValidAudience = builder.Configuration["JWT:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
@@ -26,7 +27,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 //End of JSTToken Configuration
-
+// BEGIN OF ADDING CORS POLICY FOR SPECIFICORIGIN
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowSpecificOrigin",
+//        builder =>
+//        {
+//            builder.WithOrigins("http://example.com") // Replace with the client domain
+//                   .AllowAnyHeader()
+//                   .AllowAnyMethod();
+//        });
+//});
+// END OF ADDING CORS POLICY FOR SPECIFICORIGIN
+// BEGIN OF ADDING CORS POLICY FOR ALL LINKS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+// END OF ADDING CORS POLICY FOR ALL LINKS
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -75,7 +99,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+//BEGIN OF ADDING CORS POLOCIY
+//app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAll");
+//END OF ADDING CORS POLOCIY
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

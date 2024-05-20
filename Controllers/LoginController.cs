@@ -70,20 +70,22 @@ namespace ExcelReportUpload.Controllers
             var token1 = GenerateToken(user, key, Issuer, Audience);
             return Ok(new { data, token=token1});
         }
-        //[HttpPost]
-        //public async Task<IActionResult> LogindAsync(User user)
-        //{
-        //    //var data = await _loginRepository.LoginCheckAsync(user);
-        //    return Ok("");
-        //}
 
-        
+        [HttpPost("LoginAsync"), Authorize(Roles ="Noob")]
+        public async Task<IActionResult> LogindAsync(User user)
+        {
+            var data = await _loginRepository.LoginCheckAsync(user);
+            return Ok(data);
+        }
+
+
         private string GenerateToken(User user, string key, string Issuer, string Audience)
         {
             List<Claim> claims = new List<Claim>
             {
 
                 new Claim("LoginId", user.UserName.ToString()),
+                new Claim(ClaimTypes.Role, "Admin")
 
             };
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));

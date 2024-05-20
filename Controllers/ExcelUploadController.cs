@@ -39,7 +39,7 @@ namespace ExcelReportUpload.Controllers
 
                 var headers = GetHeaders(worksheet);
                 var data = GetData(worksheet, headers);
-                excelUpload.ExcelUpload();
+                //excelUpload.ExcelUpload();
                 return Ok(data);
             }
         }
@@ -133,7 +133,7 @@ namespace ExcelReportUpload.Controllers
             try
             {
                 // Set up the SMTP client
-                using (SmtpClient smtpClient = new SmtpClient("localhost", 2500))
+                using (SmtpClient smtpClient = new SmtpClient("outlook.office365.com", 587))
                 {
                     // Set the credentials (if needed)
                     smtpClient.Credentials = new NetworkCredential("mahesh.ekambaram@talentpace.com", "MaheshYash@18");
